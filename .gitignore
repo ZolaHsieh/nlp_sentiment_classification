@@ -1,6 +1,8 @@
 *.pt
 *.pth
+glove*
 models/
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

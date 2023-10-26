@@ -3,16 +3,17 @@ import argparse
 
 from torch import nn, optim
 from model_training import train
+from transformers import AutoTokenizer
 from timeit import default_timer as timer
 from utils import plot_loss_curves, save_model
 from torch.utils.data import TensorDataset, DataLoader
-from data_preprocess import load_imdb_data, preprocess_text, get_tknr, create_vocab, word2id_padding
+from data_preprocess import load_imdb_data, preprocess_text, get_tknr, create_vocab, word2id_padding, get_glove_weight
 from models import LSTMModel, LSTMGloveModel, BiLSTMModel, DistilBertModel
 
 torch.manual_seed(1126)
 torch.cuda.manual_seed(1126)
 
-epochs = 3
+epochs = 1
 emb_dim = 128
 hidden_dim = 128
 n_layers = 2
@@ -61,10 +62,22 @@ if __name__ == '__main__':
                               n_layers = n_layers,
                               out_len = 2)
             
-        # elif args.model_type=="glove-lstm":
+        elif args.model_type=="glove-lstm":
+             weight = get_glove_weight(len(vocab), emb_dim, tokenizer)
+             model = LSTMGloveModel(emb_dim = emb_dim,
+                        hidden_dim = hidden_dim,
+                        n_layers = n_layers,
+                        out_len = 2, 
+                        weight = weight)
 
-        # elif args.model_type=="bi-lstm":
 
+        elif args.model_type=="bi-lstm":
+                model = BiLSTMModel(vocab_len = len(vocab),
+                                    emb_dim = emb_dim,
+                                    hidden_dim = hidden_dim,
+                                    n_layers = n_layers,
+                                    out_len = 2)
+                
         ## create loss func & optimizer
         print("=== create loss func & optimizer ===")
         loss_fn = nn.CrossEntropyLoss()
@@ -81,17 +94,56 @@ if __name__ == '__main__':
                             epochs=epochs)
         end_time = timer()
         print(f"Total training time: {end_time-start_time:.3f} seconds")
+    
+    else: ## distilbert
+        # get tokenizer
+        print("=== create tokeizer === ")
+        tokenizer = AutoTokenizer.from_pretrained('distilbert-base-uncased')
+
+        print("=== create data loader=== ")
+        train_data = train_data.map(lambda e: tokenizer(e['text'], padding="max_length", max_length=256, truncation=True),
+                                    batched=True)
+
+        test_data = test_data.map(lambda e: tokenizer(e['text'], padding="max_length", max_length=256, truncation=True),
+                                    batched=True)
         
-        ## print model performance
-        print("=== models performance ===")
-        for k, v in model_results.items():
-            print(f"{k}: {v[-1]:.3f}")
+        train_dataloader = DataLoader(train_data, batch_size=32, shuffle=True)
+        test_dataloader = DataLoader(test_data, batch_size=32)
 
-        ## plot model result
-        print("=== plot model loss & accuracy curve ===")
-        plot_loss_curves(f"{args.model_type.capitalize()} Result" ,model_results)
+        print(f"=== create model: {args.model_type} ===")
+        model = DistilBertModel(num_labels=2)
+        for param in model.base_model.parameters():
+            param.requires_grad = False
 
-        ## model to file
-        print("=== model to file ===")
-        save_model(model=model, target_dir="models", model_name=f"{args.model_type}_sentiment_clf.pth")
+        ## create loss func & optimizer
+        print("=== create loss func & optimizer ===")
+        loss_fn = nn.CrossEntropyLoss()
+        optimizer= optim.Adam(model.parameters())
+
+        ## model training
+        print("=== Model training ===")
+        start_time = timer()
+        model_results = train(model=model,
+                              train_dataloader=train_dataloader,
+                              test_dataloader=test_dataloader,
+                              optimizer=optimizer,
+                              loss_fn = loss_fn,
+                              epochs=epochs,
+                              bert = True)
+        end_time = timer()
+        print(f"Total training time: {end_time-start_time:.3f} seconds")
+
+
+    ## print model performance
+    print("=== models performance ===")
+    for k, v in model_results.items():
+        print(f"{k}: {v[-1]:.3f}")
+
+    ## plot model result
+    print("=== plot model loss & accuracy curve ===")
+    plot_loss_curves(f"{args.model_type.capitalize()} Result" ,model_results)
+
+    ## model to file
+    print("=== model to file ===")
+    save_model(model=model, target_dir="models", model_name=f"{args.model_type}_sentiment_clf.pth")
 
