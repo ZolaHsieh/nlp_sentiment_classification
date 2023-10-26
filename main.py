@@ -13,7 +13,6 @@ from models import LSTMModel, LSTMGloveModel, BiLSTMModel, DistilBertModel
 torch.manual_seed(1126)
 torch.cuda.manual_seed(1126)
 
-epochs = 1
 emb_dim = 128
 hidden_dim = 128
 n_layers = 2
@@ -23,9 +22,11 @@ if __name__ == '__main__':
 
     args = argparse.ArgumentParser()
     args.add_argument('--m', dest='model_type', default='lstm', help='set model for training (default: lstm)')
+    args.add_argument('--e', dest='epochs', default=2, type=int, help='training epochs')
     args = args.parse_args()
     
-    print(f"Device:{device}, model:{args.model_type}")
+    epochs = args.epochs
+    print(f"Device:{device}, model:{args.model_type}, training epochs: {epochs}")
 
     ## get data
     print("=== Load imdb data === ")
@@ -35,7 +36,7 @@ if __name__ == '__main__':
     # train_data = train_data.map(preprocess_text)
     # test_data = test_data.map(preprocess_text)
 
-    if args.model_type != "bert":
+    if args.model_type != "distilbert":
         ## vocab & tokenizer
         print("=== create tokeizer, vocab=== ")
 

@@ -67,8 +67,8 @@ def get_glove_weight(len_vocab, emb_dim, tokenizer):
     for i in range(len(wvmodel.index_to_key)):
         try:
             index = tokenizer[wvmodel.index_to_key[i]] #transfer to our word2ind
+            weight[index, :] = torch.from_numpy(wvmodel.get_vector(wvmodel.index_to_key[i]))
         except:
             continue
-    weight[index, :] = torch.from_numpy(wvmodel.get_vector(wvmodel.index2word[i]))
         
     return weight

@@ -171,12 +171,23 @@ def train(model: torch.nn.Module,
     # Loop through training and testing steps for a number of epochs
     for epoch in tqdm(range(epochs)):
         if not bert:
-            train_loss, train_acc = train_step(model=model, data_loader=train_dataloader, optimizer=optimizer, loss_fn = loss_fn)
-            test_loss, test_acc = test_step(model=model, data_loader=test_dataloader, loss_fn = loss_fn)
+            train_loss, train_acc = train_step(model=model, 
+                                               data_loader=train_dataloader, 
+                                               optimizer=optimizer, 
+                                               loss_fn = loss_fn)
+            
+            test_loss, test_acc = test_step(model=model, 
+                                            data_loader=test_dataloader, 
+                                            loss_fn = loss_fn)
         else:
-            train_loss, train_acc = bert_train_step(model=model, data_loader=train_dataloader, optimizer=optimizer, loss_fn = loss_fn)
-
-            test_loss, test_acc = bert_test_step(model=model, data_loader=test_dataloader, loss_fn = loss_fn)
+            train_loss, train_acc = bert_train_step(model=model, 
+                                                    data_loader=train_dataloader, 
+                                                    optimizer=optimizer, 
+                                                    loss_fn = loss_fn)
+            
+            test_loss, test_acc = bert_test_step(model=model, 
+                                                 data_loader=test_dataloader, 
+                                                 loss_fn = loss_fn)
 
 
         print(f"Epoch: {epoch+1} | train_loss: {train_loss:.4f} | train_acc: {train_acc:.4f} | "

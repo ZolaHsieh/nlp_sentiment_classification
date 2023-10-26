@@ -1,5 +1,9 @@
 # NLP Sentiment Classification
-LSTM, LSTM with glove-pretrain word vec, Bidirectional LSTM, DistilBert Fine-tuning sentiment analysis in PyTorch
+Sentiment analysis in PyTorch, algorithm implemented as follows:
+- LSTM
+- LSTM with glove-pretrain embedding weights
+- Bidirectional LSTM
+- DistilBert Fine-tuning
 
 ## Dataset: IMDb
 * Download directly: https://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz
