@@ -14,7 +14,7 @@ load_dataset('imdb').with_format('torch') # for pytorch format
 ```
 
 ## Glove
-Apply pre-train glove pre-train word vector for LSTM embedding initialization
+Apply pre-train glove pre-train word vector for LSTM embedding weight
 * DataSource
     * github: https://github.com/stanfordnlp/GloVe
     * Kaggle: https://www.kaggle.com/datasets/anindya2906/glove6b
