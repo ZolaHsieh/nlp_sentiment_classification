@@ -14,7 +14,7 @@ Apply pre-train glove pre-train word vector for LSTM embedding initialization
 * DataSource
     * github: https://github.com/stanfordnlp/GloVe
     * Kaggle: https://www.kaggle.com/datasets/anindya2906/glove6b
-* Preprocess: transform gloveweight to gensim方 format
+* Preprocess: transform gloveweight to gensim format
 ```bash
 unzip glove.6B.zip
 python -m gensim.scripts.glove2word2vec --input glove.6B.100d.txt --output glove.6B.100d.w2vformat.txt
