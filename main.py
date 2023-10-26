@@ -64,12 +64,13 @@ if __name__ == '__main__':
                               out_len = 2)
             
         elif args.model_type=="glove-lstm":
-             weight = get_glove_weight(len(vocab), emb_dim, tokenizer)
-             model = LSTMGloveModel(emb_dim = emb_dim,
-                        hidden_dim = hidden_dim,
-                        n_layers = n_layers,
-                        out_len = 2, 
-                        weight = weight)
+             # use glove.6B.100d and the emb_dim = 100
+             weight = get_glove_weight(vocab = vocab, emb_dim = 100)
+             model = LSTMGloveModel(emb_dim = 100,
+                                    hidden_dim = hidden_dim,
+                                    n_layers = n_layers,
+                                    out_len = 2, 
+                                    weight = weight)
 
 
         elif args.model_type=="bi-lstm":

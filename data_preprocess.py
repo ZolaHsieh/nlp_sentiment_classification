@@ -57,18 +57,18 @@ def word2id_padding(vocab, tokenizer, data_set, max_len=128):
     return torch.tensor(X, dtype=torch.int32), torch.tensor(Y)
 
 
-def get_glove_weight(len_vocab, emb_dim, tokenizer):
+def get_glove_weight(vocab, emb_dim):
+    # use glove.6B.100d and the emb_dim = 100
     wvmodel = gensim.models.KeyedVectors.load_word2vec_format('glove.6B.100d.w2vformat.txt', 
                                                               binary=False, 
                                                               encoding='utf-8')
     
 	## map golve pretrain weight to pytorch embedding pretrain weight
-    weight = torch.zeros(len_vocab+1, emb_dim) # given 0 if the word is not in glove
+    weight = torch.zeros(len(vocab)+1, emb_dim) # given 0 if the word is not in glove
     for i in range(len(wvmodel.index_to_key)):
         try:
-            index = tokenizer[wvmodel.index_to_key[i]] #transfer to our word2ind
-            weight[index, :] = torch.from_numpy(wvmodel.get_vector(wvmodel.index_to_key[i]))
+            index = vocab[wvmodel.index_to_key[i]] #transfer to our word2ind
         except:
             continue
-        
+        weight[index, :] = torch.from_numpy(wvmodel.get_vector(wvmodel.index_to_key[i]))  
     return weight

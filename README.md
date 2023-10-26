@@ -28,20 +28,20 @@ python -m gensim.scripts.glove2word2vec --input glove.6B.100d.txt --output glove
 import gensim
 word_vec = gensim.models.KeyedVectors.load_word2vec_format('glove.6B.100d.w2vformat.txt', binary=False, encoding='utf-8')
 ```
-## Performance on Training & Test set (fo ref)
+## Performance on Training & Test set (for ref)
 ### Loss
-|model|training loss|test loss|
-|---|---|---|
-|LSTM|0.1315|0.4560|
-|LSTM+GLOVE|0.1501|0.5397|
-|Bidirectional LSTM|0.1251|0.4253|
-|Fine-tuning DistilBert|0.3820|0.3415|
+|model| embedding dimention | training epochs |training loss|test loss|
+|---|---|---|---|---|
+|LSTM|128|7|0.132|0.456|
+|LSTM+GLOVE|100|5|0.380|0.389|
+|Bidirectional LSTM|128|7|0.125|0.425|
+|Fine-tuning DistilBert|128|3|0.382|0.342|
 
 ### Accuracy
 |model|training accuracy (%) |test accuracy (%)|
 |---|---|---|
 |LSTM|95.73|84.54|
-|LSTM+GLOVE|94.88|82.05|
+|LSTM+GLOVE|83.64|82.78|
 |Bidirectional LSTM|95.96|84.39|
 |Fine-tuning DistilBert|83.10|85.10|
 

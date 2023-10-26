@@ -1,6 +1,7 @@
 import torch, transformers
 from torch import nn
 
+device = "cuda" if torch.cuda.is_available() else "cpu"
 
 class LSTMModel(nn.Module):
     def __init__(self,
@@ -26,8 +27,8 @@ class LSTMModel(nn.Module):
 
     def forward(self, x):
         # initial hidden states  L x N x M
-        h0 = torch.rand(self.L, x.size(0), self.M)
-        c0 = torch.rand(self.L, x.size(0), self.M)
+        h0 = torch.rand(self.L, x.size(0), self.M).to(device)
+        c0 = torch.rand(self.L, x.size(0), self.M).to(device)
 
         embeddings = self.embedding_layer(x)
         output, _ = self.lstm(embeddings, (h0, c0))
@@ -49,7 +50,7 @@ class LSTMGloveModel(nn.Module):
     self.L = n_layers
 
     self.embedding_layer = nn.Embedding.from_pretrained(weight)
-    self.embedding_layer.weight.requires_grad = True
+    self.embedding_layer.weight.requires_grad = False
 
     self.lstm = nn.LSTM(input_size=emb_dim,
                         hidden_size=hidden_dim,
@@ -60,8 +61,8 @@ class LSTMGloveModel(nn.Module):
 
   def forward(self, x):
     # initial hidden states  L x N x M
-    h0 = torch.rand(self.L, x.size(0), self.M)
-    c0 = torch.rand(self.L, x.size(0), self.M)
+    h0 = torch.rand(self.L, x.size(0), self.M).to(device)
+    c0 = torch.rand(self.L, x.size(0), self.M).to(device)
 
     embeddings = self.embedding_layer(x)
     output, _ = self.lstm(embeddings, (h0, c0))
@@ -94,8 +95,8 @@ class BiLSTMModel(nn.Module):
 
   def forward(self, x):
     # initial hidden states  L x N x M
-    h0 = torch.rand(self.L*2, x.size(0), self.M)
-    c0 = torch.rand(self.L*2, x.size(0), self.M)
+    h0 = torch.rand(self.L*2, x.size(0), self.M).to(device)
+    c0 = torch.rand(self.L*2, x.size(0), self.M).to(device)
 
     embeddings = self.embedding_layer(x)
     output, _ = self.lstm(embeddings, (h0, c0))
