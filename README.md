@@ -33,7 +33,7 @@ word_vec = gensim.models.KeyedVectors.load_word2vec_format('glove.6B.100d.w2vfor
 |model| embedding dimention | training epochs |training loss|test loss|
 |---|---|---|---|---|
 |LSTM|128|7|0.132|0.456|
-|LSTM+GLOVE|100|5|0.380|0.389|
+|LSTM+GLOVE|100|7|0.309|0.331|
 |Bidirectional LSTM|128|7|0.125|0.425|
 |Fine-tuning DistilBert|128|3|0.382|0.342|
 
@@ -41,7 +41,7 @@ word_vec = gensim.models.KeyedVectors.load_word2vec_format('glove.6B.100d.w2vfor
 |model|training accuracy (%) |test accuracy (%)|
 |---|---|---|
 |LSTM|95.73|84.54|
-|LSTM+GLOVE|83.64|82.78|
+|LSTM+GLOVE|86.80|85.53|
 |Bidirectional LSTM|95.96|84.39|
 |Fine-tuning DistilBert|83.10|85.10|
 
