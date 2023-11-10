@@ -28,6 +28,14 @@ python -m gensim.scripts.glove2word2vec --input glove.6B.100d.txt --output glove
 import gensim
 word_vec = gensim.models.KeyedVectors.load_word2vec_format('glove.6B.100d.w2vformat.txt', binary=False, encoding='utf-8')
 ```
+## Train & Save Model
+```bash
+# --m: model type(default/lstm: LSTM, glove-lstm: LSTM with glove-pretrain embedding weights, 
+#                 bi-lstm:Bidirectional LSTM, distilbert:DistilBert)
+# --e: epoch (default:2)
+python main.py --m "glove-lstm" --e 3
+```
+
 ## Performance on Training & Test set (for ref)
 ### Loss
 |model| embedding dimention | training epochs |training loss|test loss|
