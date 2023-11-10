@@ -3,7 +3,7 @@ Sentiment analysis in PyTorch, algorithm implemented as follows:
 - LSTM
 - LSTM with glove-pretrain embedding weights
 - Bidirectional LSTM
-- DistilBert Fine-tuning
+- DistilBert
 
 ## Dataset: IMDb
 * Download directly: https://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz
@@ -41,17 +41,17 @@ python main.py --m "glove-lstm" --e 3
 |model| embedding dimention | training epochs |training loss|test loss|
 |---|---|---|---|---|
 |LSTM|128|7|0.132|0.456|
-|LSTM+GLOVE|100|5|0.380|0.389|
+|LSTM+GLOVE|100|7|0.309|0.331|
 |Bidirectional LSTM|128|7|0.125|0.425|
-|Fine-tuning DistilBert|128|3|0.382|0.342|
+|DistilBert|128|3|0.382|0.342|
 
 ### Accuracy
 |model|training accuracy (%) |test accuracy (%)|
 |---|---|---|
 |LSTM|95.73|84.54|
-|LSTM+GLOVE|83.64|82.78|
+|LSTM+GLOVE|86.80|85.53|
 |Bidirectional LSTM|95.96|84.39|
-|Fine-tuning DistilBert|83.10|85.10|
+|DistilBert|83.10|85.10|
 
 ## Demo
 Use [gradio](https://www.gradio.app/) to demo model result, please click [link](https://huggingface.co/spaces/zolakarary/SentimentClf) to give it a try!
